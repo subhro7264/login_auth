@@ -11,12 +11,31 @@ import AuthContext from "./store/auth-context";
 function App() {
   const autCtx = useContext(AuthContext);
   return (
+    // <Layout>
+    //   <Routes>
+    //     <Route path="/" exact element={<HomePage />} />
+    //     {!autCtx.isLoggedIn && <Route path="/auth" element={<AuthPage />} />}
+    //     <Route path="/profile" element={autCtx.isLoggedIn && <UserProfile />  } >{ !autCtx.isLoggedIn && <Navigate to="/" />}</Route>
+    //     <Route path="*" element={<Navigate to="/" />} />
+    //   </Routes>
+    // </Layout>
+
+
     <Layout>
       <Routes>
-        <Route path="/" exact element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         {!autCtx.isLoggedIn && <Route path="/auth" element={<AuthPage />} />}
-        <Route path="/profile" element={autCtx.isLoggedIn && <UserProfile />  } >{ !autCtx.isLoggedIn && <Navigate to="/" />}</Route>
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route
+          path="/profile"
+          element={
+            autCtx.isLoggedIn ? (
+              <UserProfile />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>
   );
