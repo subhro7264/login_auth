@@ -1,7 +1,8 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import classes from "./AuthForm.module.css";
 import AuthContext from "../../store/auth-context";
 import { useNavigate } from "react-router-dom";
+
 const AuthForm = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -13,6 +14,16 @@ const AuthForm = () => {
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      authCtx.logout();
+      navigate("/auth", { replace: true });
+    }, 1 * 60 * 1000);
+  });
+
+
+
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -45,9 +56,9 @@ const AuthForm = () => {
         } else {
           return res.json().then((data) => {
             let errorMessage = "Authentication failed";
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message;
-            }
+            // if (data && data.error && data.error.message) {
+            //   errorMessage = data.error.message;
+            // }
 
             throw new Error(errorMessage);
           });
@@ -55,7 +66,7 @@ const AuthForm = () => {
       })
       .then((data) => {
         authCtx.login(data.idToken);
-        navigate('/', { replace: true }) 
+        navigate("/", { replace: true });
       })
       .catch((err) => {
         alert(err.message);
